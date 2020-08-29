@@ -32,9 +32,13 @@ final class PendingPostQueue {
         } else {
             throw new IllegalStateException("Head present, but no tail");
         }
+        //只要有新事件加入，就notifyAll
         notifyAll();
     }
 
+    //当head为空的时候，表示该队列里面没有PendingPost对象
+    //这个时候就等待，等待时间由外部传递，上面传递的是1000毫秒
+    //当有人调用enqueue的时候，就会notifyAll，所以这里就不再等待，而是调用poll取出任务
     synchronized PendingPost poll() {
         PendingPost pendingPost = head;
         if (head != null) {

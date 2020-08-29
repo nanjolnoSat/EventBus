@@ -24,9 +24,12 @@ interface Poster {
 
     /**
      * Enqueue an event to be posted for a particular subscription.
+     * 将要为特定订阅发布的事件排队。
      *
      * @param subscription Subscription which will receive the event.
+     *                     将接收事件的订阅。
      * @param event        Event that will be posted to subscribers.
+     *                     将发布到订阅者的事件。
      */
     void enqueue(Subscription subscription, Object event);
 }

@@ -19,5 +19,6 @@ package org.greenrobot.eventbus.meta;
  * Interface for generated indexes.
  */
 public interface SubscriberInfoIndex {
+    //根据传递进来的Class返回合适的SubscriberInfo
     SubscriberInfo getSubscriberInfo(Class<?> subscriberClass);
 }

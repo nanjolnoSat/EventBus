@@ -27,6 +27,7 @@ final class BackgroundPoster implements Runnable, Poster {
     private final PendingPostQueue queue;
     private final EventBus eventBus;
 
+    //该变量的作用和HandlerPoster的handlerActive作用是一样的
     private volatile boolean executorRunning;
 
     BackgroundPoster(EventBus eventBus) {
@@ -40,6 +41,7 @@ final class BackgroundPoster implements Runnable, Poster {
             queue.enqueue(pendingPost);
             if (!executorRunning) {
                 executorRunning = true;
+                //获取EventBus的线程池，并在当前对象的run方法执行
                 eventBus.getExecutorService().execute(this);
             }
         }
@@ -50,7 +52,10 @@ final class BackgroundPoster implements Runnable, Poster {
         try {
             try {
                 while (true) {
+                    //最多等待1000毫秒获取消息，当PendingPost通过enqueue插入任务之后，很快就能获取到PendingPost对象
+                    //为什么说最多，看queue.poll的源码
                     PendingPost pendingPost = queue.poll(1000);
+                    //下面这个和Handler一样，没什么好讲的
                     if (pendingPost == null) {
                         synchronized (this) {
                             // Check again, this time in synchronized

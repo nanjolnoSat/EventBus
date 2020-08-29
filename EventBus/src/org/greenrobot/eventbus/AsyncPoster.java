@@ -18,7 +18,7 @@ package org.greenrobot.eventbus;
 
 /**
  * Posts events in background.
- * 
+ *
  * @author Markus
  */
 class AsyncPoster implements Runnable, Poster {
@@ -39,8 +39,10 @@ class AsyncPoster implements Runnable, Poster {
 
     @Override
     public void run() {
+        //可以看到 ASYNC 就不像 MAIN 和 BACKGROUND 一样，慢慢等待某个任务执行完成再执行下个任务
+        //而是只要拿到任务就直接执行
         PendingPost pendingPost = queue.poll();
-        if(pendingPost == null) {
+        if (pendingPost == null) {
             throw new IllegalStateException("No pending post available");
         }
         eventBus.invokeSubscriber(pendingPost);
