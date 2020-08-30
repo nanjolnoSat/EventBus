@@ -21,11 +21,10 @@ import org.greenrobot.eventbus.SubscriberMethod;
  * Base class for generated index classes created by annotation processing.
  */
 public interface SubscriberInfo {
-    //如果getSuperSubscriberInfo才有用，在SubscriberMethodFinder里面会判断订阅者的父class
-    //和SubscriberInfo.getSuperSubscriberInfo().getSubscriberClass()是否为同一个
-
-    //不过，如果担心出问题，那就返回getSubscriberMethods()使用的Class同一个对象那就绝对没问题
-    //但就我个人而言，如果getSuperSubscriberInfo()返回空，那该方法我也会直接返回空
+    //如果是其他SubscriberInfo的父，即存在某个SubscriberInfo的getSuperSubscriberInfo()返回该SubscriberInfo对象
+    //这种情况下该方法返回的对象才能起到作用，这种情况下必须和getSubscriberMethods()里面Class.getMethod的Class
+    //是同一个对象，如果不清楚会不会被其他SubscriberInfo.getSuperSubscriberInfo()引用，那就别返回空吧
+    //如果可以确定不被引用，那就可以偷懒，返回null
     Class<?> getSubscriberClass();
 
     //获取订阅方法
